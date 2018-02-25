@@ -14,11 +14,13 @@
 
 int main(int ac, char **av)
 {
-	int
+//	int
 	if (ac > 1)
 		av[1] = NULL;
 
-	printf("%s<\n", ft_strjoin("123123","fsdgdfsgdh"));
+
+
+//	printf("%s<\n", ft_strjoin("123123","fsdgdfsgdh"));
 
 	return 0;
 }
