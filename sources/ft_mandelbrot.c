@@ -28,16 +28,19 @@ static int		ft_isman_point(t_fract *f, t_complex c)
 {
 	long		i;
 	t_complex	z;
+	t_complex	z2;
 
 	i = 0;
 	z.im = c.im;
 	z.rl = c.rl;
 	while (i++ < f->maxiter)
 	{
-		if((z.im * z.im) + (z.rl * z.rl) > 4) // sqrt() > 2 // Absolute value of Z
+		z2.im = z.im * z.im;
+		z2.rl = z.rl * z.rl;
+		if(z2.im + z2.rl > 4) // sqrt() > 2 // Absolute value of Z
 			return (0);
 		z.im = 2 * z.rl * z.im + c.im;
-		z.rl = (z.rl * z.rl) - (z.im * z.im) + c.rl;
+		z.rl = z2.rl - z2.im + c.rl;
 	}
 	return (1);
 }
@@ -57,19 +60,13 @@ static void		ft_calc_man(t_fract *f)
 	/*или эту часть вынести в треды , внктрь передавать только диапазон/номер строки*/
 	while (p.y < f->img.h)
 	{
-				printf(">>y=%ld x=%ld\n",p.y, p.x);//*******************
-
 		p.x = 0;
 		c.im = m->maxim - (p.y * m->im_fact);
 		while (p.x < f->img.w)
 		{
 			c.rl = m->minrl + (p.x * m->rl_fact);
 			if (ft_isman_point(f, c))
-			{
-				printf(">>y=%ld x=%ld\n",p.y, p.x);//*******************
-
 				ft_pixtoimg(f, &p);
-			}
 			p.x++;
 		}
 		p.y++;
