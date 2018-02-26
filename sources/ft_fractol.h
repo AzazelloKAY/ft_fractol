@@ -10,22 +10,22 @@
 
 typedef struct		s_complex
 {
-	double	rl;	//x
+	double	rl;		//x
 	double	im;		//y
 }					t_complex;
 
 typedef struct		s_tcount
 {
-	long int	i;
-	long int	j;
+	long	i;
+	long	j;
 }					t_tcount;
 
 typedef struct		s_color
 {
-	unsigned int	a : 8;
-	unsigned int	r : 8;
-	unsigned int	g : 8;
 	unsigned int	b : 8;
+	unsigned int	g : 8;
+	unsigned int	r : 8;
+	unsigned int	a : 8;
 }					t_color;
 
 typedef union		u_pcolor
@@ -36,8 +36,8 @@ typedef union		u_pcolor
 
 typedef struct		s_point
 {
-	int 		y;
-	int 		x;
+	long 		y;
+	long 		x;
 	t_pcolor	colr;
 }					t_point;
 
@@ -48,10 +48,8 @@ typedef struct 		s_mandel
 	double	minim;
 	double	maxim;
 	double	step;
-	double	dltrl;
-	double	dltim;
-	double	cimgw;
-	double	cimgh;
+//	double	cimgw;
+//	double	cimgh;
 	double	rl_fact;
 	double	im_fact;
 }					t_mandel;
@@ -63,8 +61,8 @@ typedef struct 		s_img
 	int			bitperpix;
 	int			size_line;
 	int			endian;
-	int			h;
-	int			w;
+	long		h;
+	long		w;
 }					t_img;
 
 typedef struct		s_fract
@@ -74,11 +72,38 @@ typedef struct		s_fract
 	int			win_h;
 	int			win_w;
 	int			zoom;
-	int 		precis;
+	//int 		precis;
+	long		maxiter;
 
 	t_img		img;
 
 	void		*fract;
 }					t_fract;
+
+/*
+*** ft_initialise.c
+*/
+
+t_fract				*ft_init_mlx(char *name);
+int					ft_init_img(t_fract *f);
+
+/*
+*** ft_img.c
+*/
+
+void				ft_pixtoimg(t_fract *f, t_point *p);
+void				ft_drawimg(t_fract *f);
+
+/*
+*** ft_mandelbrot.c
+*/
+
+int					ft_mandelbrot(void);
+
+/*
+*** ft_keyhook.c
+*/
+
+void				ft_keyhookloop(t_fract *f);
 
 #endif

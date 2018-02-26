@@ -58,15 +58,24 @@ static void	ft_key2(int keycode, t_env *mx)
 	else if (keycode == 87)
 		mx->needperspect = (mx->needperspect == 0) ? 1 : 0;
 }
+*/
 
-int			ft_keycatch(int keycode, t_env *mx)
+int			ft_keycatch(int keycode, t_fract *f)
 {
-	ft_key1(keycode, mx);
-	ft_key2(keycode, mx);
-	ft_drawimg(mx);
+	//ft_key1(keycode, mx);
+	//ft_key2(keycode, mx);
+	//ft_drawimg(mx);
+	if (keycode == 53)
+	{
+		if (f->img.ptr)
+			mlx_destroy_image(f->mlx, f->img.ptr);
+		mlx_destroy_window(f->mlx, f->win);
+		exit(0);
+	}
 	return (0);
 }
- */
+
+
 
 int			ft_exit_x(t_fract *f)
 {
@@ -74,4 +83,11 @@ int			ft_exit_x(t_fract *f)
 		mlx_destroy_image(f->mlx, f->img.ptr);
 	mlx_destroy_window(f->mlx, f->win);
 	exit(0);
+}
+
+void		ft_keyhookloop(t_fract *f)
+{
+	mlx_hook(f->win, 2, 0, ft_keycatch, f);
+	mlx_hook(f->win, 17, 1L << 17, ft_exit_x, f);
+	mlx_loop(f->mlx);
 }

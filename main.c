@@ -12,11 +12,13 @@
 
 #include "sources/ft_fractol.h"
 
-int main(int ac, char **av)
+int main(/*int ac, char **av*/)
 {
-//	int
-	if (ac > 1)
-		av[1] = NULL;
+	int stat;
+
+	/*if (ac > 1)
+		if (ft_strcmp(av[1],"mandelbrot"))*/
+			stat = ft_mandelbrot ();
 
 
 
