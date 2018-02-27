@@ -8,6 +8,8 @@
 # include <mlx.h>
 //# include <fcntl.h>
 
+typedef void		(*t_frfunc)(void*);
+
 typedef struct		s_complex
 {
 	double	rl;		//x
@@ -72,12 +74,14 @@ typedef struct		s_fract
 	int			win_h;
 	int			win_w;
 	int			zoom;
-	//int 		precis;
+	int 		mov_y;
+	int 		mov_x;
 	long		maxiter;
 
 	t_img		img;
 
 	void		*fract;
+	t_frfunc	fr_func;
 }					t_fract;
 
 /*

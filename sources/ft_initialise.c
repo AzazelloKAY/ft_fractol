@@ -6,7 +6,7 @@
 
 static void		ft_setfractdefault(t_fract *f)
 {
-	f->win_h = 700;
+	f->win_h = 900;
 	f->win_w = 900;
 	f->maxiter = 50;
 }
