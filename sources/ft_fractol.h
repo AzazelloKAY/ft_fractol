@@ -6,9 +6,13 @@
 #include <stdio.h>
 # include <math.h>
 # include <mlx.h>
+# include <pthread.h>
 //# include <fcntl.h>
 
 typedef void		(*t_frfunc)(void*);
+
+
+
 
 typedef struct		s_complex
 {
@@ -82,7 +86,19 @@ typedef struct		s_fract
 
 	void		*fract;
 	t_frfunc	fr_func;
+
+	long 		thread_linenum; //*******************
 }					t_fract;
+
+
+typedef struct		s_threads
+{
+	long	tnum;
+	t_fract *fr;
+}					t_threads;
+
+
+
 
 /*
 *** ft_initialise.c
