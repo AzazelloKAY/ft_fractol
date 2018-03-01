@@ -6,22 +6,19 @@
 
 static int		ft_initman(t_fract *f)
 {
-	t_img		*i;
 	t_mandel	*m;
 
 	if (!(m = ft_memalloc(sizeof(t_mandel))))
 		return (1);
 	f->maxiter = 20;
-	i = &(f->img);
 	m->minrl = -2.0;
 	m->maxrl = 1.0;
 	m->minim = -1.2;
 	m->maxim = 1.2;//m->minrl + (m->maxrl - m->minrl) * i->h / i->w;
-	m->rl_fact = (m->maxrl - m->minrl) / (i->w - 1);
-	m->im_fact = (m->maxim - m->minim) / (i->h - 1);
-	m->step = 0.01;
+	m->im_fact = (m->maxim - m->minim) / (f->win_h - 1);
+	m->rl_fact = (m->maxrl - m->minrl) / (f->win_w- 1);
 	f->fract = m;
-	//f->fr_func = &ft_calc_man; // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+	f->fract_func = &ft_tr_calc_man; // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	return (0);
 }
 
@@ -62,23 +59,21 @@ static void		*ft_treadlonch(void* tf)
 
 	ft_bzero(&p, sizeof(t_tcount));
 	m = (t_mandel*)f->fract;
-	//p.x = 0;
 	p.y = ((t_threads*)tf)->tnum;
-	c.im = m->maxim - (p.y * m->im_fact);
 
-	printf(">>thread =%ld\n", p.y);
+	c.im = m->maxim - (p.y * m->im_fact) + (f->mov_y / f->zoom);
+	//printf(">>thread =%ld\n", p.y);
 
 	while (p.x < f->img.w)
 	{
-		c.rl = m->minrl + (p.x * m->rl_fact);
+		c.rl = m->minrl + (p.x * m->rl_fact) + (f->mov_x / f->zoom);
 		ft_pixtoimg(f, ft_isman_point(f, c, &p));
 		p.x++;
 	}
-	p.y++;
 	return (NULL);
 }
 
-static void		ft_tr_calc_man(t_fract *f)
+void			ft_tr_calc_man(t_fract *f)
 {
 	pthread_t tread[f->img.h];
 	t_threads tf[f->img.h];
@@ -86,7 +81,7 @@ static void		ft_tr_calc_man(t_fract *f)
 
 	//c.rl = 1.5 * (x - D_WIDTH / 2) / (0.5 * uk->zoom * D_WIDTH) + uk->move_x;
 	//c.im = (y - D_HEIGHT / 2) / (0.5 * uk->zoom * D_HEIGHT) + uk->move_y;
-
+	ft_init_img(f);
 	y = 0;
 	while (y < f->img.h)
 	{
@@ -102,6 +97,7 @@ static void		ft_tr_calc_man(t_fract *f)
 		pthread_join(tread[y], NULL);
 		y++;
 	}
+	ft_drawimg(f);
 }
 
 //static void		ft_calc_man(t_fract *f)
@@ -152,7 +148,7 @@ int 		ft_mandelbrot(void)
 
 	ft_tr_calc_man(f);
 
-	ft_drawimg(f);
+	//ft_drawimg(f);
 	ft_keyhookloop(f);
 	return (0);
 }

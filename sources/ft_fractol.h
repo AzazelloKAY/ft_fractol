@@ -5,11 +5,11 @@
 # include "../libft/libft.h"
 #include <stdio.h>
 # include <math.h>
-# include <mlx.h>
+# include </usr/local/include/mlx.h>
+//# include <mlx.h>
 # include <pthread.h>
 //# include <fcntl.h>
 
-typedef void		(*t_frfunc)(void*);
 
 
 
@@ -53,7 +53,6 @@ typedef struct 		s_mandel
 	double	maxrl;
 	double	minim;
 	double	maxim;
-	double	step;
 //	double	cimgw;
 //	double	cimgh;
 	double	rl_fact;
@@ -71,23 +70,28 @@ typedef struct 		s_img
 	long		w;
 }					t_img;
 
+typedef	struct		s_fract t_fract;
+
+typedef void		(*t_frfunc)(t_fract*);
+
 typedef struct		s_fract
 {
 	void		*mlx;
 	void		*win;
 	int			win_h;
 	int			win_w;
-	int			zoom;
-	int 		mov_y;
-	int 		mov_x;
+	double		zoom;
+	double		step;
+	double 		mov_y;
+	double 		mov_x;
 	long		maxiter;
 
 	t_img		img;
 
 	void		*fract;
-	t_frfunc	fr_func;
+	t_frfunc	fract_func;
 
-	long 		thread_linenum; //*******************
+	//long 		thread_linenum; //*******************
 }					t_fract;
 
 
@@ -96,7 +100,6 @@ typedef struct		s_threads
 	long	tnum;
 	t_fract *fr;
 }					t_threads;
-
 
 
 
@@ -119,6 +122,7 @@ void				ft_drawimg(t_fract *f);
 */
 
 int					ft_mandelbrot(void);
+void				ft_tr_calc_man(t_fract *f);
 
 /*
 *** ft_keyhook.c

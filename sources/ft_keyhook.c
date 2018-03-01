@@ -50,17 +50,25 @@ static void		ft_key1(int keycode, t_fract *f)
 		ft_exit_x(f);
 	}
 	else if (keycode == 24 || keycode == 69)
+	{
 		f->zoom += (f->zoom < 50) ? 1 : 0;
+		//f->maxiter +=
+	}
 	else if (keycode == 27 || keycode == 78)
-		f->zoom -= (f->zoom > 2) ? 1 : 0;
-//	else if (keycode == 126)
-//		mx->tr.l_start -= (mx->tr.l_start > -500) ? 1 : 0;
-//	else if (keycode == 125)
-//		mx->tr.l_start += (mx->tr.l_start < 500) ? 1 : 0;
-//	else if (keycode == 123)
-//		mx->tr.v_start -= (mx->tr.v_start > -500) ? 1 : 0;
-//	else if (keycode == 124)
-//		mx->tr.v_start += (mx->tr.v_start < 500) ? 1 : 0;
+	{
+		//f->maxiter -=
+		f->zoom -= (f->zoom > 1) ? 1 : 0;
+	}
+	else if (keycode == 126)
+		f->mov_y -= (f->mov_y > -3) ? f->step : 0;
+	else if (keycode == 125)
+		f->mov_y += (f->mov_y < 3) ? f->step : 0;
+	else if (keycode == 123)
+		f->mov_x += (f->mov_x < 3) ? f->step: 0;
+	else if (keycode == 124)
+		f->mov_x -= (f->mov_x > -3) ? f->step : 0;
+
+	printf("keycode = %d\n",keycode);
 //	else if (keycode == 82)
 //		ft_setmxdefault(mx);
 }
@@ -77,6 +85,7 @@ int			ft_keycatch(int keycode, t_fract *f)
 //		mlx_destroy_window(f->mlx, f->win);
 //		exit(0);
 //	}
+	f->fract_func(f);
 	return (0);
 }
 

@@ -9,6 +9,10 @@ static void		ft_setfractdefault(t_fract *f)
 	f->win_h = 900;
 	f->win_w = 900;
 	f->maxiter = 50;
+	f->zoom = 1;
+	f->mov_y = 0.0;
+	f->mov_x = 0.0;
+	f->step = 0.1;
 }
 
 t_fract		*ft_init_mlx(char *name)
