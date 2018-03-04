@@ -12,88 +12,76 @@ static int		ft_exit_x(t_fract *f)
 	mlx_destroy_window(f->mlx, f->win);
 	exit(0);
 }
-/*
-static int	ft_calc_scale(t_env *mx)
-{
-	int scale;
 
-	scale = mx->tr.scale;
-	if (scale < 50 &&
-		((mx->map->lnum * scale) * (mx->map->vnum * scale) < 20000000))
-		return (2);
-	return (0);
-}
-
-
-static void	ft_key2(int keycode, t_env *mx)
-{
-	if (keycode == 91)
-		mx->tr.x_ang = (mx->tr.x_ang - 2) % 360;
-	else if (keycode == 84)
-		mx->tr.x_ang = (mx->tr.x_ang + 2) % 360;
-	else if (keycode == 86)
-		mx->tr.y_ang = (mx->tr.y_ang + 2) % 360;
-	else if (keycode == 88)
-		mx->tr.y_ang = (mx->tr.y_ang - 2) % 360;
-	else if (keycode == 89)
-		mx->tr.z_ang = (mx->tr.z_ang + 2) % 360;
-	else if (keycode == 92)
-		mx->tr.z_ang = (mx->tr.z_ang - 2) % 360;
-	else if (keycode == 87)
-		mx->needperspect = (mx->needperspect == 0) ? 1 : 0;
-}
-*/
 static void		ft_key1(int keycode, t_fract *f)
 {
-	if (keycode == 53)
+	if (keycode == 24 || keycode == 69)
 	{
-		ft_exit_x(f);
-	}
-	else if (keycode == 24 || keycode == 69)
-	{
-		f->zoom += (f->zoom < 50) ? 1 : 0;
-		//f->maxiter +=
+		f->zoom += (f->zoom < FT_ZOOMMAX) ? FT_ZOOMSTP : 0;
+		f->step /= (f->step > 0.0000001) ? 1.001 : 1;
+		f->maxiter += (f->maxiter < 500) ? 1 : 0;
 	}
 	else if (keycode == 27 || keycode == 78)
 	{
-		//f->maxiter -=
-		f->zoom -= (f->zoom > 1) ? 1 : 0;
+		f->zoom -= (f->zoom > 1) ? FT_ZOOMSTP : 0;
+		f->step *= (f->step < 0.1) ? 1.001 : 1;
+		f->maxiter -= (f->maxiter > 20) ? 1 : 0;
 	}
 	else if (keycode == 126)
-		f->mov_y -= (f->mov_y > -3) ? f->step : 0;
+		f->mov_y -= (f->mov_y > -FT_MOVLIM) ? f->step : 0;
 	else if (keycode == 125)
-		f->mov_y += (f->mov_y < 3) ? f->step : 0;
+		f->mov_y += (f->mov_y < FT_MOVLIM) ? f->step : 0;
 	else if (keycode == 123)
-		f->mov_x += (f->mov_x < 3) ? f->step: 0;
+		f->mov_x -= (f->mov_x < FT_MOVLIM) ? f->step : 0;
 	else if (keycode == 124)
-		f->mov_x -= (f->mov_x > -3) ? f->step : 0;
+		f->mov_x += (f->mov_x > -FT_MOVLIM) ? f->step : 0;
+	else if (keycode == 82)
+		ft_initman(f);
 
-	printf("keycode = %d\n",keycode);
-//	else if (keycode == 82)
-//		ft_setmxdefault(mx);
+	//printf("mov_y= %10f\tmov_x=%10f\t zoom=%f\n", f->mov_y, f->mov_x, f->zoom);
+	//printf("zoom = %f\n", f->zoom);
 }
 
-int			ft_keycatch(int keycode, t_fract *f)
+static int			ft_mouse_hook(int mb, int x, int y, t_fract *f)
 {
+	t_mandel	*m;
+
+	m = (t_mandel*)f->fract;
+	//mb == 5 UP
+	((mb == 5) ?	ft_key1(69, f) : 0);
+	//mb == 4 DOWN
+	((mb == 4) ?	ft_key1(78, f) : 0);
+
+	//if (mb == 5 || mb == 4)
+	{
+		f->mouse.im = y;
+		f->mouse.rl = x;
+
+//		m->mb_im_shft = (m->im_fact * (y - (f->win_h / 2))) / FT_ZOOMSTP; //(m->imdlt / f->win_h) /*/ FT_STEP*/ * (y - (f->win_h / 2));
+//		m->mb_rl_shft = (m->rl_fact * (x - (f->win_w / 2))) / FT_ZOOMSTP;//(m->rldlt / f->win_w) /*/ FT_STEP*/ * (x - (f->win_w / 2));
+	}
+	//printf("y dlt= %10f\tx dlt=%10f\tzoom = %10f\n", m->mb_im_shft, m->mb_rl_shft, f->zoom);
+	//printf("y= %d\t x=%d\t scrol=%d\t f=%p\n", y, x, mb, f);
+	f->fract_func(f);
+	ft_bzero(&f->mouse, sizeof(t_complex));
+
+
+	return (0);
+}
+
+static int			ft_keycatch(int keycode, t_fract *f)
+{
+	if (keycode == 53)
+		ft_exit_x(f);
 	ft_key1(keycode, f);
-	//ft_key2(keycode, mx);
-	//ft_drawimg(mx);
-//	if (keycode == 53)
-//	{
-//		if (f->img.ptr)
-//			mlx_destroy_image(f->mlx, f->img.ptr);
-//		mlx_destroy_window(f->mlx, f->win);
-//		exit(0);
-//	}
 	f->fract_func(f);
 	return (0);
 }
 
-
-
 void		ft_keyhookloop(t_fract *f)
 {
 	mlx_hook(f->win, 2, 0, ft_keycatch, f);
+	mlx_hook(f->win, 4, 5, ft_mouse_hook, f);
 	mlx_hook(f->win, 17, 1L << 17, ft_exit_x, f);
 	mlx_loop(f->mlx);
 }

@@ -12,7 +12,7 @@ static void		ft_setfractdefault(t_fract *f)
 	f->zoom = 1;
 	f->mov_y = 0.0;
 	f->mov_x = 0.0;
-	f->step = 0.1;
+	f->step = FT_STEP;
 }
 
 t_fract		*ft_init_mlx(char *name)
