@@ -13,14 +13,12 @@ int				ft_initman(t_fract *f)
 	f->maxiter = 20;
 	m->minrl = -2.0;
 	m->maxrl = 1.0;
-	m->minim = -1.2;
-	m->maxim = 1.2;//m->minrl + (m->maxrl - m->minrl) * i->h / i->w;
+	m->minim = -1.3;
+	m->maxim = 1.3;//m->minrl + (m->maxrl - m->minrl) * i->h / i->w;
 	m->imdlt = m->maxim - m->minim;
 	m->rldlt = m->maxrl - m->minrl;
 	m->im_fact = m->imdlt / (f->win_h - 1);
 	m->rl_fact = m->rldlt / (f->win_w - 1);
-	m->mb_im_shft = 0;
-	m->mb_rl_shft = 0;
 	f->fract = m;
 	f->zoom = 1;
 	f->mov_y = 0.0;
@@ -29,26 +27,23 @@ int				ft_initman(t_fract *f)
 	return (0);
 }
 
-void		ft_movscale(t_fract *f)
+static void		ft_updscale(t_fract *f)
 {
 	t_mandel	*m;
 
 	m = (t_mandel*)f->fract;
-	f->maxiter = 20;
-	m->minrl = (-2.0 + f->mov_x) / f->zoom;
-	m->maxrl = (1.0 + f->mov_x) / f->zoom;
-	m->minim = (-1.2 + f->mov_y) / f->zoom;
-	m->maxim = (1.2 + f->mov_y) / f->zoom;//m->minrl + (m->maxrl - m->minrl) * i->h / i->w;
-
-	printf("f->mov_x= %10f\tf->mov_y=%10f f->zoom=%10f\n", f->mov_x, f->mov_y, f->zoom);
-	printf("xmin= %10f\txmax=%10f\t ymin=%10f ymax=%10f\n", m->minrl, m->maxrl, m->minim, m->maxim);
+	m->minrl = -2.0 / f->zoom;
+	m->maxrl = 1.0 / f->zoom;
+	m->minim = -1.3 / f->zoom;
+	m->maxim = 1.3 / f->zoom;
 
 	m->imdlt = m->maxim - m->minim;
 	m->rldlt = m->maxrl - m->minrl;
 	m->im_fact = m->imdlt / (f->win_h - 1);
 	m->rl_fact = m->rldlt / (f->win_w - 1);
-//	m->mb_im_shft = (m->im_fact * (f->mouse.im - (f->win_h / 2))) / FT_ZOOMSTP;
-//	m->mb_rl_shft = (m->rl_fact * (f->mouse.rl - (f->win_w / 2))) / FT_ZOOMSTP;
+
+	f->mov_y += (f->mouse.im != 0) ? (m->im_fact * (f->mouse.im - (f->win_h / 2))) * 0.2 : 0;
+	f->mov_x += (f->mouse.rl != 0) ? (m->rl_fact * (f->mouse.rl - (f->win_w / 2))) * 0.2 : 0;
 }
 
 static t_point	*ft_isman_point(t_fract *f, t_complex c, t_point *p)
@@ -73,7 +68,7 @@ static t_point	*ft_isman_point(t_fract *f, t_complex c, t_point *p)
 	if (i == f->maxiter)
 		p->colr.val = 0;
 	else
-		p->colr.chnl.g = ((double)i/(double)f->maxiter) * 255;
+		p->colr.chnl.g = ((double)i / f->maxiter) * 255;
 	return (p);
 }
 
@@ -89,23 +84,11 @@ static void		*ft_treadlonch(void* tf)
 	m = (t_mandel*)f->fract;
 	p.y = ((t_threads*)tf)->tnum;
 
-	ft_movscale(f);
-
-
-	//c.im = (y - D_HEIGHT / 2) / (0.5 * uk->zoom * D_HEIGHT) + uk->move_y;
-
-//	c.im = m->maxim - ((p.y + (m->mb_im_shft * f->zoom)) * m->im_fact / f->zoom) + (f->mov_y / f->zoom);
-//	c.im = m->minim / f->zoom + (p.y * m->im_fact + f->mov_y) / f->zoom + m->mb_im_shft / FT_ZOOMSTP;// - m->mb_im_shft / 100; //- (m->mb_im_shft * 0.9 * f->zoom);
-
-	c.im = m->minim + (p.y * m->im_fact);// + m->mb_im_shft;// - m->mb_im_shft / 100; //- (m->mb_im_shft * 0.9 * f->zoom);
-
+//	printf("f->mov_x= %10f\tf->mov_y=%10f f->zoom=%10f\n", f->mov_x, f->mov_y, f->zoom);
+	c.im = m->minim + (p.y * m->im_fact) + f->mov_y ;//+ m->mb_im_shft;
 	while (p.x < f->img.w)
 	{
-	//c.rl = 1.5 * (x - D_WIDTH / 2) / (0.5 * uk->zoom * D_WIDTH) + uk->move_x;
-
-//		c.rl = m->minrl + ((p.x + (m->mb_rl_shft * f->zoom)) * m->rl_fact / f->zoom) + (f->mov_x / f->zoom);
-//		c.rl = m->minrl / f->zoom + (p.x * m->rl_fact + f->mov_x) / f->zoom + m->mb_rl_shft / FT_ZOOMSTP;// +  / 100;// + (m->mb_rl_shft * 0.9* f->zoom);
-		c.rl = m->minrl + (p.x * m->rl_fact);// + m->mb_rl_shft;// +  / 100;// + (m->mb_rl_shft * 0.9* f->zoom);
+		c.rl = m->minrl + (p.x * m->rl_fact) + f->mov_x ;//+ m->mb_rl_shft;
 		ft_pixtoimg(f, ft_isman_point(f, c, &p));
 		p.x++;
 	}
@@ -119,7 +102,9 @@ void			ft_tr_calc_man(t_fract *f)
 	long		y;
 
 	ft_init_img(f);
+	ft_updscale(f);
 	y = 0;
+//	printf(">>>>f->maxiter=%ld\n", f->maxiter);
 	while (y < f->img.h)
 	{
 		tf[y].tnum = y;
@@ -127,7 +112,6 @@ void			ft_tr_calc_man(t_fract *f)
 		pthread_create(&tread[y], NULL, ft_treadlonch, (void*)&(tf[y]));
 		y++;
 	}
-
 	y = 0;
 	while (y < f->img.h)
 	{

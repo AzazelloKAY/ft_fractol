@@ -17,15 +17,16 @@ static void		ft_key1(int keycode, t_fract *f)
 {
 	if (keycode == 24 || keycode == 69)
 	{
-		f->zoom += (f->zoom < FT_ZOOMMAX) ? FT_ZOOMSTP : 0;
-		f->step /= (f->step > 0.0000001) ? 1.001 : 1;
-		f->maxiter += (f->maxiter < 500) ? 1 : 0;
+		f->zoom *= (f->zoom < FT_ZOOMMAX) ? FT_ZOOMSTP : 1;
+		f->step /= (f->step > 0.0000001) ? FT_ZOOMSTP : 1;
+		f->maxiter *= (f->maxiter < 500) ? FT_ITERSTP : 1;
+
 	}
 	else if (keycode == 27 || keycode == 78)
 	{
-		f->zoom -= (f->zoom > 1) ? FT_ZOOMSTP : 0;
-		f->step *= (f->step < 0.1) ? 1.001 : 1;
-		f->maxiter -= (f->maxiter > 20) ? 1 : 0;
+		f->zoom /= (f->zoom > 1) ? FT_ZOOMSTP : 1;
+		f->step *= (f->step < 0.1) ? FT_ZOOMSTP : 1;
+		f->maxiter /= (f->maxiter > 20) ? FT_ITERSTP : 1;
 	}
 	else if (keycode == 126)
 		f->mov_y -= (f->mov_y > -FT_MOVLIM) ? f->step : 0;
@@ -37,9 +38,14 @@ static void		ft_key1(int keycode, t_fract *f)
 		f->mov_x += (f->mov_x > -FT_MOVLIM) ? f->step : 0;
 	else if (keycode == 82)
 		ft_initman(f);
+	else if (keycode == 91)
+		f->maxiter += (f->maxiter < 500) ? 1 : 0;
+	else if (keycode == 84)
+		f->maxiter -= (f->maxiter > 20) ? 1 : 0;
 
-	//printf("mov_y= %10f\tmov_x=%10f\t zoom=%f\n", f->mov_y, f->mov_x, f->zoom);
+//	printf("mov_y= %10f\tmov_x=%10f\t zoom=%f f->maxiter=%f\n", f->mov_y, f->mov_x, f->zoom, f->maxiter);
 	//printf("zoom = %f\n", f->zoom);
+//	printf("keycode = %d\n", keycode);
 }
 
 static int			ft_mouse_hook(int mb, int x, int y, t_fract *f)
@@ -52,20 +58,18 @@ static int			ft_mouse_hook(int mb, int x, int y, t_fract *f)
 	//mb == 4 DOWN
 	((mb == 4) ?	ft_key1(78, f) : 0);
 
-	//if (mb == 5 || mb == 4)
+	if (mb == 5 || mb == 4)
 	{
 		f->mouse.im = y;
 		f->mouse.rl = x;
-
-//		m->mb_im_shft = (m->im_fact * (y - (f->win_h / 2))) / FT_ZOOMSTP; //(m->imdlt / f->win_h) /*/ FT_STEP*/ * (y - (f->win_h / 2));
-//		m->mb_rl_shft = (m->rl_fact * (x - (f->win_w / 2))) / FT_ZOOMSTP;//(m->rldlt / f->win_w) /*/ FT_STEP*/ * (x - (f->win_w / 2));
 	}
+
 	//printf("y dlt= %10f\tx dlt=%10f\tzoom = %10f\n", m->mb_im_shft, m->mb_rl_shft, f->zoom);
 	//printf("y= %d\t x=%d\t scrol=%d\t f=%p\n", y, x, mb, f);
+
 	f->fract_func(f);
+
 	ft_bzero(&f->mouse, sizeof(t_complex));
-
-
 	return (0);
 }
 

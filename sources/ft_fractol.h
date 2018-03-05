@@ -10,9 +10,10 @@
 # include <pthread.h>
 //# include <fcntl.h>
 
+# define FT_ZOOMSTP 1.1
+# define FT_ZOOMMAX 50000000
 # define FT_MOVLIM 500000
-# define FT_ZOOMSTP 0.7
-# define FT_ZOOMMAX 50000
+# define FT_ITERSTP 1.009
 # define FT_STEP 0.1
 
 
@@ -59,8 +60,6 @@ typedef struct 		s_mandel
 	double	maxim;
 	double	imdlt;
 	double	rldlt;
-	double	mb_im_shft;
-	double	mb_rl_shft;
 	double	rl_fact;
 	double	im_fact;
 }					t_mandel;
@@ -91,7 +90,7 @@ typedef struct		s_fract
 	double 		mov_y;
 	double 		mov_x;
 	t_complex 	mouse;
-	long		maxiter;
+	double		maxiter;
 
 	t_img		img;
 

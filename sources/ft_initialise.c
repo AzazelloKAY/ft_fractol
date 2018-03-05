@@ -38,7 +38,7 @@ int			ft_init_img(t_fract *f)
 	if (!(f->img.ptr = mlx_new_image(f->mlx, f->img.w, f->img.h)))
 		return (1);
 	f->img.bitperpix = sizeof(int) * 8;
-	f->img.size_line = sizeof(int) * f->img.w; //?????????????? h??
+	f->img.size_line = sizeof(int) * f->img.w;
 	f->img.endian = 0;
 	if (!(f->img.str = (uint32_t*)mlx_get_data_addr(f->img.ptr,
 		&(f->img.bitperpix), &(f->img.size_line), &(f->img.endian))))
