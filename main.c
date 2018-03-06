@@ -12,13 +12,17 @@
 
 #include "sources/ft_fractol.h"
 
-int main(/*int ac, char **av*/)
+int main(int ac, char **av)
 {
 	int stat;
 
-	/*if (ac > 1)
-		if (ft_strcmp(av[1],"mandelbrot"))*/
-			stat = ft_mandelbrot ();
+		//stat = ft_julia();
+	if (ac > 1 && ft_strequ(av[1],"1")) //mandelbrot"))
+		stat = ft_mandelbrot();
+	else if (ac > 1 && ft_strequ(av[1],"2"))
+		stat = ft_julia();
+	else
+		printf("You have made some error!\nUsage:\t1\t2\n");
 
 
 

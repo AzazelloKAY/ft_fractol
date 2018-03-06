@@ -10,8 +10,10 @@
 # include <pthread.h>
 //# include <fcntl.h>
 
+//#include <complex.h>
+
 # define FT_ZOOMSTP 1.1
-# define FT_ZOOMMAX 50000000
+# define FT_ZOOMMAX 5000000000
 # define FT_MOVLIM 500000
 # define FT_ITERSTP 1.009
 # define FT_STEP 0.1
@@ -25,11 +27,11 @@ typedef struct		s_complex
 	double	rl;		//x
 }					t_complex;
 
-typedef struct		s_tcount
-{
-	long	i;
-	long	j;
-}					t_tcount;
+//typedef struct		s_tcount
+//{
+//	long	i;
+//	long	j;
+//}					t_tcount;
 
 typedef struct		s_color
 {
@@ -58,11 +60,19 @@ typedef struct 		s_mandel
 	double	maxrl;
 	double	minim;
 	double	maxim;
-	double	imdlt;
-	double	rldlt;
 	double	rl_fact;
 	double	im_fact;
 }					t_mandel;
+
+//typedef struct 		s_julia
+//{
+//	double	minrl;
+//	double	maxrl;
+//	double	minim;
+//	double	maxim;
+//	double	rl_fact;
+//	double	im_fact;
+//}					t_julia;
 
 typedef struct 		s_img
 {
@@ -78,6 +88,7 @@ typedef struct 		s_img
 typedef	struct		s_fract t_fract;
 
 typedef void		(*t_frfunc)(t_fract*);
+typedef int			(*t_init)(t_fract*);
 
 typedef struct		s_fract
 {
@@ -90,12 +101,16 @@ typedef struct		s_fract
 	double 		mov_y;
 	double 		mov_x;
 	t_complex 	mouse;
+	int 		live_mouse;
+	int 		live_mouse_move;
+	int 		mouse_moved;
 	double		maxiter;
 
 	t_img		img;
 
 	void		*fract;
 	t_frfunc	fract_func;
+	t_init		fract_init;
 
 	//long 		thread_linenum; //*******************
 }					t_fract;
@@ -115,6 +130,7 @@ typedef struct		s_threads
 
 t_fract				*ft_init_mlx(char *name);
 int					ft_init_img(t_fract *f);
+void				ft_makecolor(t_pcolor *c, long i, t_complex z);
 
 /*
 *** ft_img.c
@@ -128,7 +144,7 @@ void				ft_drawimg(t_fract *f);
 */
 
 int					ft_initman(t_fract *f);
-void				ft_tr_calc_man(t_fract *f);
+void				ft_calc_man(t_fract *f);
 int					ft_mandelbrot(void);
 
 /*
@@ -136,5 +152,12 @@ int					ft_mandelbrot(void);
 */
 
 void				ft_keyhookloop(t_fract *f);
+
+/*
+*** ft_julia.c
+*/
+
+void				ft_calc_jul(t_fract *f);
+int					ft_julia(void);
 
 #endif

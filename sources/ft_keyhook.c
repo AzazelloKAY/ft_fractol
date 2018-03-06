@@ -37,39 +37,44 @@ static void		ft_key1(int keycode, t_fract *f)
 	else if (keycode == 124)
 		f->mov_x += (f->mov_x > -FT_MOVLIM) ? f->step : 0;
 	else if (keycode == 82)
-		ft_initman(f);
+		f->fract_init(f);
 	else if (keycode == 91)
 		f->maxiter += (f->maxiter < 500) ? 1 : 0;
 	else if (keycode == 84)
 		f->maxiter -= (f->maxiter > 20) ? 1 : 0;
-
-//	printf("mov_y= %10f\tmov_x=%10f\t zoom=%f f->maxiter=%f\n", f->mov_y, f->mov_x, f->zoom, f->maxiter);
-	//printf("zoom = %f\n", f->zoom);
-//	printf("keycode = %d\n", keycode);
+	else if (keycode == 76)
+		f->live_mouse = (f->live_mouse == 0) ? 1 : 0;
+//	printf("keycode = %d im=%10f rl=%10f\n", keycode , f->mouse.im, f->mouse.rl);
 }
 
-static int			ft_mouse_hook(int mb, int x, int y, t_fract *f)
+static int			ft_mouse_hook(int mkeycode, int x, int y, t_fract *f)
 {
-	t_mandel	*m;
+	((mkeycode == 5) ?	ft_key1(69, f) : 0);
+	((mkeycode == 4) ?	ft_key1(78, f) : 0);
 
-	m = (t_mandel*)f->fract;
-	//mb == 5 UP
-	((mb == 5) ?	ft_key1(69, f) : 0);
-	//mb == 4 DOWN
-	((mb == 4) ?	ft_key1(78, f) : 0);
-
-	if (mb == 5 || mb == 4)
+	if ((mkeycode == 5 || mkeycode == 4 || mkeycode == 2) && f->live_mouse == 1)
 	{
 		f->mouse.im = y;
 		f->mouse.rl = x;
+		f->mouse_moved = 1;
 	}
-
-	//printf("y dlt= %10f\tx dlt=%10f\tzoom = %10f\n", m->mb_im_shft, m->mb_rl_shft, f->zoom);
-	//printf("y= %d\t x=%d\t scrol=%d\t f=%p\n", y, x, mb, f);
-
+//	printf("mov_y= %10f\tmov_x=%10f\t zoom=%f f->maxiter=%f\n", f->mov_y, f->mov_x, f->zoom, f->maxiter);
+//	printf("y dlt= %10f\tx dlt=%10f\tzoom = %10f\n", m->mb_im_shft, m->mb_rl_shft, f->zoom);
+//	printf("keycode = %d im=%10f rl=%10f\n", mkeycode , f->mouse.im, f->mouse.rl);
 	f->fract_func(f);
+	return (0);
+}
 
-	ft_bzero(&f->mouse, sizeof(t_complex));
+static int 			ft_mouse_mov(int x, int y, t_fract *f)
+{
+//	printf("flag =%5d y=%5d x=%5d fp=%p\n", f->live_mouse , y, x, f);
+	if (f->live_mouse == 1 && f->live_mouse_move == 1)
+	{
+		f->mouse.im = y;
+		f->mouse.rl = x;
+		f->mouse_moved = 1;
+		f->fract_func(f);
+	}
 	return (0);
 }
 
@@ -86,6 +91,7 @@ void		ft_keyhookloop(t_fract *f)
 {
 	mlx_hook(f->win, 2, 0, ft_keycatch, f);
 	mlx_hook(f->win, 4, 5, ft_mouse_hook, f);
+	mlx_hook(f->win, 6, 1L << 6, ft_mouse_mov, f);
 	mlx_hook(f->win, 17, 1L << 17, ft_exit_x, f);
 	mlx_loop(f->mlx);
 }

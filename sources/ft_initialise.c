@@ -15,7 +15,7 @@ static void		ft_setfractdefault(t_fract *f)
 	f->step = FT_STEP;
 }
 
-t_fract		*ft_init_mlx(char *name)
+t_fract			*ft_init_mlx(char *name)
 {
 	t_fract	*f;
 
@@ -29,7 +29,7 @@ t_fract		*ft_init_mlx(char *name)
 	return (f);
 }
 
-int			ft_init_img(t_fract *f)
+int				ft_init_img(t_fract *f)
 {
 	if (f->img.ptr)
 		mlx_destroy_image(f->mlx, f->img.ptr);
@@ -44,4 +44,19 @@ int			ft_init_img(t_fract *f)
 		&(f->img.bitperpix), &(f->img.size_line), &(f->img.endian))))
 		return (1);
 	return (0);
+}
+
+void			ft_makecolor(t_pcolor *c, long i, t_complex z)
+{
+	double index;
+	double freq;
+	double clr;
+
+	freq = 0.56;
+	clr = 1;
+	index = (i + 1 - (log((log(sqrt(z.rl * z.rl + z.im * z.im)) / 2) / log(2)) / log(2))) * freq;
+	c->chnl.r = cos(index) * 127 + 128;
+	c->chnl.g = cos(index + clr) * 127 + 128;
+	c->chnl.b = cos(index + 2 * clr) * 127 + 128;
+	c->chnl.a = 0;
 }
