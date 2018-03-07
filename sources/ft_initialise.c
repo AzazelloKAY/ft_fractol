@@ -46,4 +46,27 @@ int				ft_init_img(t_fract *f)
 	return (0);
 }
 
+int				ft_initman(t_fract *f)
+{
+	t_mandel	*m;
+
+	if (!(m = ft_memalloc(sizeof(t_mandel))))
+		return (1);
+	f->maxiter = 20;
+	m->minrl = -2.0;
+	m->maxrl = 1.0;
+	m->minim = -1.3;
+	m->maxim = 1.3;
+	m->im_fact = (m->maxim - m->minim) / (f->win_h - 1);
+	m->rl_fact = (m->maxrl - m->minrl) / (f->win_w - 1);
+	f->fract = m;
+	f->zoom = 1;
+	f->mov_y = 0.0;
+	f->mov_x = 0.0;
+	f->fract_func = &ft_calc_man;
+	f->live_mouse = 1;
+	f->live_mouse_move = 0;
+	f->acid_color = 0;
+	return (0);
+}
 

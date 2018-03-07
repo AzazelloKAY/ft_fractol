@@ -4,30 +4,6 @@
 
 #include "ft_fractol.h"
 
-int				ft_initman(t_fract *f)
-{
-	t_mandel	*m;
-
-	if (!(m = ft_memalloc(sizeof(t_mandel))))
-		return (1);
-	f->maxiter = 20;
-	m->minrl = -2.0;
-	m->maxrl = 1.0;
-	m->minim = -1.3;
-	m->maxim = 1.3;
-	m->im_fact = (m->maxim - m->minim) / (f->win_h - 1);
-	m->rl_fact = (m->maxrl - m->minrl) / (f->win_w - 1);
-	f->fract = m;
-	f->zoom = 1;
-	f->mov_y = 0.0;
-	f->mov_x = 0.0;
-	f->fract_func = &ft_calc_man;
-	f->live_mouse = 1;
-	f->live_mouse_move = 0;
-	f->acid_color = 0;
-	return (0);
-}
-
 static void		ft_updscale(t_fract *f)
 {
 	t_mandel	*m;
@@ -39,8 +15,6 @@ static void		ft_updscale(t_fract *f)
 	m->maxim = 1.3 / f->zoom;
 	m->im_fact = (m->maxim - m->minim) / (f->win_h - 1);
 	m->rl_fact = (m->maxrl - m->minrl) / (f->win_w - 1);
-//	f->mov_y += (f->mouse.im != 0) ? (m->im_fact * (f->mouse.im - (f->win_h / 2))) * 0.19 : 0;
-//	f->mov_x += (f->mouse.rl != 0) ? (m->rl_fact * (f->mouse.rl - (f->win_w / 2))) * 0.19 : 0;
 	if (f->mmoved != 0)
 	{
 		f->mov_y += (m->im_fact * (f->mouse.im - (f->win_h / 2))) * 0.19;
@@ -118,15 +92,14 @@ void			ft_calc_man(t_fract *f)
 	ft_bzero(&f->mouse, sizeof(t_complex));
 }
 
-void 		*ft_mandelbrot(void)
+void 			ft_mandelbrot(void)
 {
 	t_fract *f;
 
 	if (!(f = ft_init_mlx("akokoshk`s mandelbrot")) || ft_init_img(f)
 		|| ft_initman(f))
-		return (NULL);
+		return ;
 	f->fract_init = ft_initman;
 	f->fract_func(f);
 	ft_keyhookloop(f);
-	return (NULL);
 }

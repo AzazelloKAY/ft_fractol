@@ -132,6 +132,7 @@ typedef struct		s_threads
 
 t_fract				*ft_init_mlx(char *name);
 int					ft_init_img(t_fract *f);
+int					ft_initman(t_fract *f);
 
 /*
 *** ft_img.c
@@ -147,7 +148,7 @@ uint32_t			ft_makecolor(t_fract *f, uint32_t c, long i, t_complex z);
 
 int					ft_initman(t_fract *f);
 void				ft_calc_man(t_fract *f);
-void				*ft_mandelbrot(void);
+void				ft_mandelbrot(void);
 
 /*
 *** ft_keyhook.c
@@ -160,6 +161,6 @@ void				ft_keyhookloop(t_fract *f);
 */
 
 void				ft_calc_jul(t_fract *f);
-void				*ft_julia(void);
+void				ft_julia(void);
 
 #endif

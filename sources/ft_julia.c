@@ -61,7 +61,6 @@ static void		*ft_treadlonch(void* tf)
 	return (NULL);
 }
 
-//			printf("f->mouse.im = %10f f->mouse.rl = %10f f->mov_y = %10f f->mov_x = %10f\n",f->mouse.im, f->mouse.rl, f->mov_y, f->mov_x);
 void			ft_calc_jul(t_fract *f)
 {
 	pthread_t	tread[f->img.h];
@@ -91,15 +90,14 @@ void			ft_calc_jul(t_fract *f)
 	ft_drawimg(f);
 }
 
-void 		*ft_julia(void)
+void 			ft_julia(void)
 {
 	t_fract *f;
 
 	if (!(f = ft_init_mlx("akokoshk`s julia")) || ft_init_img(f)
 		|| ft_init_jul(f))
-		return (NULL);
+		return ;
 	f->fract_init = ft_init_jul;
 	f->fract_func(f);
 	ft_keyhookloop(f);
-	return (NULL);
 }

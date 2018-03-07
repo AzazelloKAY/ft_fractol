@@ -14,22 +14,12 @@
 
 int main(int ac, char **av)
 {
-	pthread_t	ttread[2];
-	int stat;
-
-
-	pthread_create(&ttread[0], NULL, ft_treadlonch, (void*)&(tf[y]));
-	pthread_create(&ttread[1], NULL, ft_treadlonch, (void*)&(tf[y]));
-
-	pthread_join(tread[0], NULL);
-	pthread_join(tread[1], NULL);
-		//stat = ft_julia();
-//	if (ac > 1 && ft_strequ(av[1],"1")) //mandelbrot"))
-//		stat = ft_mandelbrot();
-//	else if (ac > 1 && ft_strequ(av[1],"2"))
-//		stat = ft_julia();
-//	else
-//		printf("You have made some error!\nUsage:\t1\t2\n");
+	if (ac > 1 && ft_strequ(av[1],"1")) //mandelbrot"))
+		ft_mandelbrot();
+	else if (ac > 1 && ft_strequ(av[1],"2"))
+		ft_julia();
+	else
+		printf("You have made some error!\nUsage:\t1\t2\n");
 
 
 
