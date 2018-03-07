@@ -100,11 +100,13 @@ typedef struct		s_fract
 	double		step;
 	double 		mov_y;
 	double 		mov_x;
+	double		maxiter;
 	t_complex 	mouse;
+	t_complex	mouse_alt;
 	int 		live_mouse;
 	int 		live_mouse_move;
-	int 		mouse_moved;
-	double		maxiter;
+	int 		mmoved;
+	int			acid_color;
 
 	t_img		img;
 
@@ -130,7 +132,6 @@ typedef struct		s_threads
 
 t_fract				*ft_init_mlx(char *name);
 int					ft_init_img(t_fract *f);
-void				ft_makecolor(t_pcolor *c, long i, t_complex z);
 
 /*
 *** ft_img.c
@@ -138,6 +139,7 @@ void				ft_makecolor(t_pcolor *c, long i, t_complex z);
 
 void				ft_pixtoimg(t_fract *f, t_point *p);
 void				ft_drawimg(t_fract *f);
+uint32_t			ft_makecolor(t_fract *f, uint32_t c, long i, t_complex z);
 
 /*
 *** ft_mandelbrot.c
@@ -145,7 +147,7 @@ void				ft_drawimg(t_fract *f);
 
 int					ft_initman(t_fract *f);
 void				ft_calc_man(t_fract *f);
-int					ft_mandelbrot(void);
+void				*ft_mandelbrot(void);
 
 /*
 *** ft_keyhook.c
@@ -158,6 +160,6 @@ void				ft_keyhookloop(t_fract *f);
 */
 
 void				ft_calc_jul(t_fract *f);
-int					ft_julia(void);
+void				*ft_julia(void);
 
 #endif

@@ -46,17 +46,4 @@ int				ft_init_img(t_fract *f)
 	return (0);
 }
 
-void			ft_makecolor(t_pcolor *c, long i, t_complex z)
-{
-	double index;
-	double freq;
-	double clr;
 
-	freq = 0.56;
-	clr = 1;
-	index = (i + 1 - (log((log(sqrt(z.rl * z.rl + z.im * z.im)) / 2) / log(2)) / log(2))) * freq;
-	c->chnl.r = cos(index) * 127 + 128;
-	c->chnl.g = cos(index + clr) * 127 + 128;
-	c->chnl.b = cos(index + 2 * clr) * 127 + 128;
-	c->chnl.a = 0;
-}
