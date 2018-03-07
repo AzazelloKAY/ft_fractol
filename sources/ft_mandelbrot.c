@@ -11,8 +11,8 @@ static void		ft_updscale(t_fract *f)
 	m = (t_mandel*)f->fract;
 	m->minrl = -2.0 / f->zoom;
 	m->maxrl = 1.0 / f->zoom;
-	m->minim = -1.3 / f->zoom;
-	m->maxim = 1.3 / f->zoom;
+	m->minim = -1.4 / f->zoom;
+	m->maxim = 1.4 / f->zoom;
 	m->im_fact = (m->maxim - m->minim) / (f->win_h - 1);
 	m->rl_fact = (m->maxrl - m->minrl) / (f->win_w - 1);
 	if (f->mmoved != 0)
@@ -38,8 +38,7 @@ static t_point	*ft_isman_point(t_fract *f, t_complex c, t_point *p)
 		z2.rl = z.rl * z.rl;
 		if(z2.im + z2.rl > 4)
 			break ;
-		z.im = 2 * z.rl * z.im + c.im;
-		z.rl = z2.rl - z2.im + c.rl;
+		z = f->fract_calc(z, z2, c);
 	}
 	if (i == f->maxiter)
 		p->colr.val = 0;
@@ -92,7 +91,7 @@ void			ft_calc_man(t_fract *f)
 	ft_bzero(&f->mouse, sizeof(t_complex));
 }
 
-void 			ft_mandelbrot(void)
+void 			ft_mandelbrot(int num)
 {
 	t_fract *f;
 
@@ -100,6 +99,7 @@ void 			ft_mandelbrot(void)
 		|| ft_initman(f))
 		return ;
 	f->fract_init = ft_initman;
-	f->fract_func(f);
+	ft_initcalcfunc(num, f);
+	f->fract_lonch(f);
 	ft_keyhookloop(f);
 }

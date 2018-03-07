@@ -10,7 +10,6 @@
 # include <pthread.h>
 //# include <fcntl.h>
 
-//#include <complex.h>
 
 # define FT_ZOOMSTP 1.1
 # define FT_ZOOMMAX 5000000000
@@ -18,20 +17,11 @@
 # define FT_ITERSTP 1.009
 # define FT_STEP 0.1
 
-
-
-
 typedef struct		s_complex
 {
 	double	im;		//y
 	double	rl;		//x
 }					t_complex;
-
-//typedef struct		s_tcount
-//{
-//	long	i;
-//	long	j;
-//}					t_tcount;
 
 typedef struct		s_color
 {
@@ -64,16 +54,6 @@ typedef struct 		s_mandel
 	double	im_fact;
 }					t_mandel;
 
-//typedef struct 		s_julia
-//{
-//	double	minrl;
-//	double	maxrl;
-//	double	minim;
-//	double	maxim;
-//	double	rl_fact;
-//	double	im_fact;
-//}					t_julia;
-
 typedef struct 		s_img
 {
 	void		*ptr;
@@ -89,6 +69,7 @@ typedef	struct		s_fract t_fract;
 
 typedef void		(*t_frfunc)(t_fract*);
 typedef int			(*t_init)(t_fract*);
+typedef t_complex	(*t_frcalc)(t_complex, t_complex, t_complex);
 
 typedef struct		s_fract
 {
@@ -107,14 +88,12 @@ typedef struct		s_fract
 	int 		live_mouse_move;
 	int 		mmoved;
 	int			acid_color;
-
+	double		colorshift;
 	t_img		img;
-
 	void		*fract;
-	t_frfunc	fract_func;
+	t_frfunc	fract_lonch;
 	t_init		fract_init;
-
-	//long 		thread_linenum; //*******************
+	t_frcalc	fract_calc;
 }					t_fract;
 
 
@@ -124,8 +103,6 @@ typedef struct		s_threads
 	t_fract *fr;
 }					t_threads;
 
-
-
 /*
 *** ft_initialise.c
 */
@@ -133,6 +110,7 @@ typedef struct		s_threads
 t_fract				*ft_init_mlx(char *name);
 int					ft_init_img(t_fract *f);
 int					ft_initman(t_fract *f);
+void				ft_initcalcfunc(int n, t_fract *f);
 
 /*
 *** ft_img.c
@@ -148,7 +126,7 @@ uint32_t			ft_makecolor(t_fract *f, uint32_t c, long i, t_complex z);
 
 int					ft_initman(t_fract *f);
 void				ft_calc_man(t_fract *f);
-void				ft_mandelbrot(void);
+void				ft_mandelbrot(int num);
 
 /*
 *** ft_keyhook.c
@@ -162,5 +140,23 @@ void				ft_keyhookloop(t_fract *f);
 
 void				ft_calc_jul(t_fract *f);
 void				ft_julia(void);
+
+/*
+*** ft_mandelbrot_func1.c
+*/
+
+t_complex	ft_m_1(t_complex z, t_complex z2, t_complex c);
+t_complex	ft_m_2(t_complex z, t_complex z2, t_complex c);
+t_complex	ft_m_3(t_complex z, t_complex z2, t_complex c);
+t_complex	ft_m_4(t_complex z, t_complex z2, t_complex c);
+t_complex	ft_m_5(t_complex z, t_complex z2, t_complex c);
+
+/*
+*** ft_mandelbrot_func2.c
+*/
+
+t_complex	ft_m_6(t_complex z, t_complex z2, t_complex c);
+t_complex	ft_m_7(t_complex z, t_complex z2, t_complex c);
+t_complex	ft_m_8(t_complex z, t_complex z2, t_complex c);
 
 #endif

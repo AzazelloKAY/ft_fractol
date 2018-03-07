@@ -4,19 +4,42 @@
 
 #include "ft_fractol.h"
 
-void		ft_pixtoimg(t_fract *f, t_point *p)
+static void		ft_writhelp(t_fract *f)
+{
+	int start;
+	int i;
+
+	start = 1;
+	i = 18;
+	mlx_string_put(f->mlx, f->win, 5, start + (i * 0),
+				   0xF0F090, "\"+/-\" - scaling");
+	mlx_string_put(f->mlx, f->win, 5, start + (i * 1),
+				   0xF0F090, "\"Up, Down, Left, Right\" - moving");
+	mlx_string_put(f->mlx, f->win, 5, start + (i * 2),
+				   0xF0F090, "\"NUM[82]\" - precision");
+	mlx_string_put(f->mlx, f->win, 5, start + (i * 3),
+				   0xF0F090, "\"NUM*\" - on/off colors");
+	mlx_string_put(f->mlx, f->win, 5, start + (i * 4),
+				   0xF0F090, "\"NUM_enter\" - on/off julia mouse move");
+	mlx_string_put(f->mlx, f->win, 5, start + (i * 5),
+				   0xF0F090, "\"NUM0\" - set to default");
+	mlx_string_put(f->mlx, f->win, 5, start + (i * 6),
+				   0xF0F090, "\"Esc\" - exit");
+}
+
+void			ft_pixtoimg(t_fract *f, t_point *p)
 {
 	f->img.str[((f->img.w * p->y) + p->x)] = p->colr.val;
 }
 
-void		ft_drawimg(t_fract *f)
+void			ft_drawimg(t_fract *f)
 {
 	mlx_clear_window(f->mlx, f->win);
 	mlx_put_image_to_window(f->mlx, f->win, f->img.ptr,	0, 0);
-	//ft_writhelp(f);
+	ft_writhelp(f);
 }
 
-uint32_t			ft_makecolor(t_fract *f, uint32_t c, long i, t_complex z)
+uint32_t		ft_makecolor(t_fract *f, uint32_t c, long i, t_complex z)
 {
 	double index;
 	double freq;

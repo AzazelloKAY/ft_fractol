@@ -10,7 +10,7 @@ int				ft_init_jul(t_fract *f)
 	f->zoom = 1;
 	f->mov_y = 0.0;
 	f->mov_x = 0.0;
-	f->fract_func = &ft_calc_jul;
+	f->fract_lonch = &ft_calc_jul;
 	f->mouse.im = 0.27015;
 	f->mouse.rl = -0.7;
 	f->live_mouse = 1;
@@ -98,6 +98,6 @@ void 			ft_julia(void)
 		|| ft_init_jul(f))
 		return ;
 	f->fract_init = ft_init_jul;
-	f->fract_func(f);
+	f->fract_lonch(f);
 	ft_keyhookloop(f);
 }

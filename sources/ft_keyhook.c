@@ -46,7 +46,7 @@ static void		ft_key1(int keycode, t_fract *f)
 		f->live_mouse = (f->live_mouse == 0) ? 1 : 0;
 	else if (keycode == 67)
 		f->acid_color = (f->acid_color == 0) ? 1 : 0;
-//	printf("keycode = %d im=%10f rl=%10f\n", keycode , f->mouse.im, f->mouse.rl);
+	printf("keycode = %d im=%10f rl=%10f\n", keycode , f->mouse.im, f->mouse.rl);
 }
 
 static int			ft_mouse_hook(int mkeycode, int x, int y, t_fract *f)
@@ -62,7 +62,7 @@ static int			ft_mouse_hook(int mkeycode, int x, int y, t_fract *f)
 //	printf("mov_y= %10f\tmov_x=%10f\t zoom=%f f->maxiter=%f\n", f->mov_y, f->mov_x, f->zoom, f->maxiter);
 //	printf("y dlt= %10f\tx dlt=%10f\tzoom = %10f\n", m->mb_im_shft, m->mb_rl_shft, f->zoom);
 //	printf("keycode = %d im=%10f rl=%10f\n", mkeycode , f->mouse.im, f->mouse.rl);
-	f->fract_func(f);
+	f->fract_lonch(f);
 	return (0);
 }
 
@@ -74,7 +74,7 @@ static int 			ft_mouse_mov(int x, int y, t_fract *f)
 		f->mouse.im = y;
 		f->mouse.rl = x;
 		f->mmoved = 1;
-		f->fract_func(f);
+		f->fract_lonch(f);
 	}
 	return (0);
 }
@@ -84,7 +84,7 @@ static int			ft_keycatch(int keycode, t_fract *f)
 	if (keycode == 53)
 		ft_exit_x(f);
 	ft_key1(keycode, f);
-	f->fract_func(f);
+	f->fract_lonch(f);
 	return (0);
 }
 
