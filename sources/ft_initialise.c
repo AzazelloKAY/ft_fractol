@@ -90,4 +90,3 @@ void		ft_initcalcfunc(int n, t_fract *f)
 	else
 		f->fract_calc = ft_m_1;
 }
-

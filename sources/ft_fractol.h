@@ -8,14 +8,13 @@
 # include </usr/local/include/mlx.h>
 //# include <mlx.h>
 # include <pthread.h>
-//# include <fcntl.h>
-
 
 # define FT_ZOOMSTP 1.1
 # define FT_ZOOMMAX 5000000000
 # define FT_MOVLIM 500000
 # define FT_ITERSTP 1.009
 # define FT_STEP 0.1
+# define FT_MAXTHREADS 32
 
 typedef struct		s_complex
 {
@@ -119,6 +118,7 @@ void				ft_initcalcfunc(int n, t_fract *f);
 void				ft_pixtoimg(t_fract *f, t_point *p);
 void				ft_drawimg(t_fract *f);
 uint32_t			ft_makecolor(t_fract *f, uint32_t c, long i, t_complex z);
+int					ft_exit_x(t_fract *f);
 
 /*
 *** ft_mandelbrot.c

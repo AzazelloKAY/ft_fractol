@@ -40,10 +40,7 @@ static t_point	*ft_isman_point(t_fract *f, t_complex c, t_point *p)
 			break ;
 		z = f->fract_calc(z, z2, c);
 	}
-	if (i == f->maxiter)
-		p->colr.val = 0;
-	else
-		p->colr.val = ft_makecolor(f, p->colr.val, i, z);
+	p->colr.val = ft_makecolor(f, p->colr.val, i, z);
 	return (p);
 }
 

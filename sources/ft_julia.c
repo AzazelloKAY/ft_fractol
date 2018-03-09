@@ -38,10 +38,7 @@ static t_point	*ft_isjul_point(t_fract *f, t_point *p)
 		if(z.im * z.im + z.rl * z.rl > 4)
 			break ;
 	}
-	if (i == f->maxiter)
-		p->colr.val = 0;
-	else
-		p->colr.val = ft_makecolor(f, p->colr.val, i, z);
+	p->colr.val = ft_makecolor(f, p->colr.val, i, z);
 	return (p);
 }
 

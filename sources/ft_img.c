@@ -18,12 +18,14 @@ static void		ft_writhelp(t_fract *f)
 	mlx_string_put(f->mlx, f->win, 5, start + (i * 2),
 				   0xF0F090, "\"NUM[82]\" - precision");
 	mlx_string_put(f->mlx, f->win, 5, start + (i * 3),
-				   0xF0F090, "\"NUM*\" - on/off colors");
+				   0xF0F090, "\"NUM[46]\" - color shifting");
 	mlx_string_put(f->mlx, f->win, 5, start + (i * 4),
-				   0xF0F090, "\"NUM_enter\" - on/off julia mouse move");
+				   0xF0F090, "\"NUM*\" - on/off colors");
 	mlx_string_put(f->mlx, f->win, 5, start + (i * 5),
-				   0xF0F090, "\"NUM0\" - set to default");
+				   0xF0F090, "\"NUM_enter\" - on/off julia mouse move");
 	mlx_string_put(f->mlx, f->win, 5, start + (i * 6),
+				   0xF0F090, "\"NUM0\" - set to default");
+	mlx_string_put(f->mlx, f->win, 5, start + (i * 7),
 				   0xF0F090, "\"Esc\" - exit");
 }
 
@@ -43,20 +45,36 @@ uint32_t		ft_makecolor(t_fract *f, uint32_t c, long i, t_complex z)
 {
 	double index;
 	double freq;
-	double clr;
 	t_pcolor res;
 
-	res.val = 0;
+	res.val = c;
+	if (i == f->maxiter)
+	{
+		res.val = 0;
+		return (res.val);
+	}
 	if(f->acid_color == 0)
 	{
 		res.chnl.g = ((double)i / f->maxiter) * 255;
 		return (res.val);
 	}
 	freq = 0.56;
-	clr = 1;
-	index = (i + 1 - (log((log(sqrt(z.rl * z.rl + z.im * z.im)) / 2) / log(2)) / log(2))) * freq;
+	index = (i + 1 - (log((log(sqrt(z.rl * z.rl + z.im * z.im))
+		/ 2) / log(2)) / log(2))) * freq;
 	res.chnl.r = cos(index) * 127 + 128;
-	res.chnl.g = cos(index + clr) * 127 + 128;
-	res.chnl.b = cos(index + 2 * clr) * 127 + 128;
+	res.chnl.g = cos(index + f->colorshift) * 127 + 128;
+	res.chnl.b = cos(index + 2 * f->colorshift) * 127 + 128;
 	return (res.val);
+}
+
+int				ft_exit_x(t_fract *f)
+{
+	if (f->img.ptr)
+		mlx_destroy_image(f->mlx, f->img.ptr);
+	mlx_destroy_window(f->mlx, f->win);
+	if (f->fract != NULL)
+		free(f->fract);
+	if (f != NULL)
+		free(f);
+	exit(0);
 }
