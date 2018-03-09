@@ -12,25 +12,23 @@
 
 #include "ft_fractol.h"
 
-static int	ft_selectfract(char *s)
+static int		ft_selectfract(char *s)
 {
-	if (ft_strequ(s, "mandelbrot"))
+	if (ft_strequ(s, "1"))
 		return (1);
-	else if (ft_strequ(s, "mandelbrot1"))
-		return (1);
-	else if (ft_strequ(s, "mandelbrot2"))
+	else if (ft_strequ(s, "2"))
 		return (2);
-	else if (ft_strequ(s, "mandelbrot3"))
+	else if (ft_strequ(s, "3"))
 		return (3);
-	else if (ft_strequ(s, "mandelbrot4"))
+	else if (ft_strequ(s, "4"))
 		return (4);
-	else if (ft_strequ(s, "mandelbrot5"))
+	else if (ft_strequ(s, "5"))
 		return (5);
-	else if (ft_strequ(s, "mandelbrot6"))
+	else if (ft_strequ(s, "6"))
 		return (6);
-	else if (ft_strequ(s, "mandelbrot7"))
+	else if (ft_strequ(s, "7"))
 		return (7);
-	else if (ft_strequ(s, "mandelbrot8"))
+	else if (ft_strequ(s, "8"))
 		return (8);
 	else if (ft_strequ(s, "julia"))
 		return (9);
@@ -38,38 +36,70 @@ static int	ft_selectfract(char *s)
 		return (0);
 }
 
-static void	ft_printusage(void)
+static void		ft_lonchfract(char *s)
 {
-	printf("%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n", "[USAGE] Bad arguments",
-		"-> ./fractol julia", "-> ./fractol mandelbrot",
-		"-> ./fractol mandelbrot2", "-> ./fractol mandelbrot3",
-		"-> ./fractol mandelbrot4", "-> ./fractol mandelbrot5",
-		"-> ./fractol mandelbrot6", "-> ./fractal mandelbrot7",
-		"-> ./fractal mandelbrot8");
+	if (ft_strequ(s, "1"))
+		ft_mandelbrot(1);
+	else if (ft_strequ(s, "2"))
+		ft_mandelbrot(2);
+	else if (ft_strequ(s, "3"))
+		ft_mandelbrot(3);
+	else if (ft_strequ(s, "4"))
+		ft_mandelbrot(4);
+	else if (ft_strequ(s, "5"))
+		ft_mandelbrot(5);
+	else if (ft_strequ(s, "6"))
+		ft_mandelbrot(6);
+	else if (ft_strequ(s, "7"))
+		ft_mandelbrot(7);
+	else if (ft_strequ(s, "8"))
+		ft_mandelbrot(8);
+	else if (ft_strequ(s, "julia"))
+		ft_julia();
 }
 
-int			main(int ac, char **av)
+static void		ft_printusage(void)
+{
+	printf("%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n", "[USAGE] Bad arguments",
+		"-> ./fractol julia", "-> ./fractol 1",
+		"-> ./fractol 2", "-> ./fractol 3",
+		"-> ./fractol 4", "-> ./fractol 5",
+		"-> ./fractol 6", "-> ./fractal 7",
+		"-> ./fractal 8");
+}
+
+static void		ft_lonchprocess(char *av0, char *av1)
+{
+	char *av[3];
+
+	av[0] = av0;
+	av[1] = av1;
+	av[2] = NULL;
+	execve(av[0], av, NULL);
+}
+
+int				main(int ac, char **av)
 {
 	int i;
-	int num;
 	int flag;
 
-	i = 1;
 	flag = 1;
-	if (ac > 1)
+	i = 1;
+	if (ac == 2)
+		ft_lonchfract(av[1]);
+	else if (ac > 2)
 		while (i < ac)
 		{
-			num = ft_selectfract(av[i++]);
-			((num != 0) ? flag = 0 : 0);
-			if (num > 0 && num <= 9)
+			if (ft_selectfract(av[i]) > 0)
+			{
+				flag = 0;
 				if (fork() == 0)
 				{
-					if (num == 9)
-						ft_julia();
-					else
-						ft_mandelbrot(num);
+					ft_lonchprocess(av[0], av[i]);
 					return (0);
 				}
+			}
+			i++;
 		}
 	if (flag)
 		ft_printusage();
