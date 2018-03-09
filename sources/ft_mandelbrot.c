@@ -1,6 +1,14 @@
-//
-// Created by Antonin KOKOSHKO on 2/25/18.
-//
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_mandelbrot.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: akokoshk <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2018/03/09 14:12:20 by akokoshk          #+#    #+#             */
+/*   Updated: 2018/03/09 14:12:20 by akokoshk         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "ft_fractol.h"
 
@@ -36,7 +44,7 @@ static t_point	*ft_isman_point(t_fract *f, t_complex c, t_point *p)
 	{
 		z2.im = z.im * z.im;
 		z2.rl = z.rl * z.rl;
-		if(z2.im + z2.rl > 4)
+		if (z2.im + z2.rl > 4)
 			break ;
 		z = f->fract_calc(z, z2, c);
 	}
@@ -44,7 +52,7 @@ static t_point	*ft_isman_point(t_fract *f, t_complex c, t_point *p)
 	return (p);
 }
 
-static void		*ft_treadlonch(void* tf)
+static void		*ft_treadlonch(void *tf)
 {
 	t_point		p;
 	t_complex	c;
@@ -88,7 +96,7 @@ void			ft_calc_man(t_fract *f)
 	ft_bzero(&f->mouse, sizeof(t_complex));
 }
 
-void 			ft_mandelbrot(int num)
+void			ft_mandelbrot(int num)
 {
 	t_fract *f;
 

@@ -1,6 +1,14 @@
-//
-// Created by Antonin KOKOSHKO on 3/7/18.
-//
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_mandelbrot_func2.c                              :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: akokoshk <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2018/03/09 14:12:37 by akokoshk          #+#    #+#             */
+/*   Updated: 2018/03/09 14:12:37 by akokoshk         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "ft_fractol.h"
 
@@ -29,6 +37,6 @@ t_complex	ft_m_8(t_complex z, t_complex z2, t_complex c)
 
 	zri = z2.im * z2.rl;
 	res.im = z.im * (5 * z2.rl * z2.rl - 10 * zri + z2.im * z2.im) + c.im;
-	res.rl =  z.rl * (z2.rl * z2.rl - 10 * zri + 5 * z2.im * z2.im) + c.rl;
+	res.rl = z.rl * (z2.rl * z2.rl - 10 * zri + 5 * z2.im * z2.im) + c.rl;
 	return (res);
 }

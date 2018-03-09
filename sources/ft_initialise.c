@@ -1,6 +1,14 @@
-//
-// Created by Antonin KOKOSHKO on 2/25/18.
-//
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_initialise.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: akokoshk <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2018/03/09 14:10:10 by akokoshk          #+#    #+#             */
+/*   Updated: 2018/03/09 14:10:10 by akokoshk         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "ft_fractol.h"
 
@@ -22,7 +30,7 @@ t_fract			*ft_init_mlx(char *name)
 	if (!(f = ft_memalloc(sizeof(t_fract))))
 		return (NULL);
 	ft_setfractdefault(f);
-	if(!(f->mlx = mlx_init()))
+	if (!(f->mlx = mlx_init()))
 		return (NULL);
 	if (!(f->win = mlx_new_window(f->mlx, f->win_w, f->win_h, name)))
 		return (NULL);
@@ -71,7 +79,7 @@ int				ft_initman(t_fract *f)
 	return (0);
 }
 
-void		ft_initcalcfunc(int n, t_fract *f)
+void			ft_initcalcfunc(int n, t_fract *f)
 {
 	if (n == 2)
 		f->fract_calc = ft_m_2;

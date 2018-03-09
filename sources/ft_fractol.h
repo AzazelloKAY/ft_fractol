@@ -1,3 +1,14 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_fractol.h                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: akokoshk <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2018/03/09 14:09:49 by akokoshk          #+#    #+#             */
+/*   Updated: 2018/03/09 14:09:50 by akokoshk         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #ifndef FT_FRACTOL_H
 # define FT_FRACTOL_H
@@ -5,21 +16,18 @@
 # include "../libft/libft.h"
 # include <stdio.h>
 # include <math.h>
-# include </usr/local/include/mlx.h>
-//# include <mlx.h>
 # include <pthread.h>
-
 # define FT_ZOOMSTP 1.1
 # define FT_ZOOMMAX 5000000000
 # define FT_MOVLIM 500000
 # define FT_ITERSTP 1.009
 # define FT_STEP 0.1
-# define FT_MAXTHREADS 32
+# include <mlx.h>
 
 typedef struct		s_complex
 {
-	double	im;		//y
-	double	rl;		//x
+	double	im;
+	double	rl;
 }					t_complex;
 
 typedef struct		s_color
@@ -32,18 +40,18 @@ typedef struct		s_color
 
 typedef union		u_pcolor
 {
-	uint32_t		val;
-	t_color			chnl;
+	uint32_t	val;
+	t_color		chnl;
 }					t_pcolor;
 
 typedef struct		s_point
 {
-	long 		y;
-	long 		x;
+	long		y;
+	long		x;
 	t_pcolor	colr;
 }					t_point;
 
-typedef struct 		s_mandel
+typedef struct		s_mandel
 {
 	double	minrl;
 	double	maxrl;
@@ -53,7 +61,7 @@ typedef struct 		s_mandel
 	double	im_fact;
 }					t_mandel;
 
-typedef struct 		s_img
+typedef struct		s_img
 {
 	void		*ptr;
 	uint32_t	*str;
@@ -64,12 +72,6 @@ typedef struct 		s_img
 	long		w;
 }					t_img;
 
-typedef	struct		s_fract t_fract;
-
-typedef void		(*t_frfunc)(t_fract*);
-typedef int			(*t_init)(t_fract*);
-typedef t_complex	(*t_frcalc)(t_complex, t_complex, t_complex);
-
 typedef struct		s_fract
 {
 	void		*mlx;
@@ -78,23 +80,22 @@ typedef struct		s_fract
 	int			win_w;
 	double		zoom;
 	double		step;
-	double 		mov_y;
-	double 		mov_x;
+	double		mov_y;
+	double		mov_x;
 	double		maxiter;
-	t_complex 	mouse;
+	t_complex	mouse;
 	t_complex	mouse_alt;
-	int 		live_mouse;
-	int 		live_mouse_move;
-	int 		mmoved;
+	int			live_mouse;
+	int			live_mouse_move;
+	int			mmoved;
 	int			acid_color;
 	double		colorshift;
 	t_img		img;
 	void		*fract;
-	t_frfunc	fract_lonch;
-	t_init		fract_init;
-	t_frcalc	fract_calc;
+	void		(*fract_lonch)(struct s_fract*);
+	int			(*fract_init)(struct s_fract*);
+	t_complex	(*fract_calc)(t_complex, t_complex, t_complex);
 }					t_fract;
-
 
 typedef struct		s_threads
 {
@@ -145,18 +146,18 @@ void				ft_julia(void);
 *** ft_mandelbrot_func1.c
 */
 
-t_complex	ft_m_1(t_complex z, t_complex z2, t_complex c);
-t_complex	ft_m_2(t_complex z, t_complex z2, t_complex c);
-t_complex	ft_m_3(t_complex z, t_complex z2, t_complex c);
-t_complex	ft_m_4(t_complex z, t_complex z2, t_complex c);
-t_complex	ft_m_5(t_complex z, t_complex z2, t_complex c);
+t_complex			ft_m_1(t_complex z, t_complex z2, t_complex c);
+t_complex			ft_m_2(t_complex z, t_complex z2, t_complex c);
+t_complex			ft_m_3(t_complex z, t_complex z2, t_complex c);
+t_complex			ft_m_4(t_complex z, t_complex z2, t_complex c);
+t_complex			ft_m_5(t_complex z, t_complex z2, t_complex c);
 
 /*
 *** ft_mandelbrot_func2.c
 */
 
-t_complex	ft_m_6(t_complex z, t_complex z2, t_complex c);
-t_complex	ft_m_7(t_complex z, t_complex z2, t_complex c);
-t_complex	ft_m_8(t_complex z, t_complex z2, t_complex c);
+t_complex			ft_m_6(t_complex z, t_complex z2, t_complex c);
+t_complex			ft_m_7(t_complex z, t_complex z2, t_complex c);
+t_complex			ft_m_8(t_complex z, t_complex z2, t_complex c);
 
 #endif

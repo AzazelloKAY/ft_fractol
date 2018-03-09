@@ -10,42 +10,42 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "sources/ft_fractol.h"
+#include "ft_fractol.h"
 
 static int	ft_selectfract(char *s)
 {
 	if (ft_strequ(s, "mandelbrot"))
-		return(1);
+		return (1);
 	else if (ft_strequ(s, "mandelbrot1"))
-		return(1);
+		return (1);
 	else if (ft_strequ(s, "mandelbrot2"))
-		return(2);
+		return (2);
 	else if (ft_strequ(s, "mandelbrot3"))
-		return(3);
+		return (3);
 	else if (ft_strequ(s, "mandelbrot4"))
-		return(4);
+		return (4);
 	else if (ft_strequ(s, "mandelbrot5"))
-		return(5);
+		return (5);
 	else if (ft_strequ(s, "mandelbrot6"))
-		return(6);
+		return (6);
 	else if (ft_strequ(s, "mandelbrot7"))
-		return(7);
+		return (7);
 	else if (ft_strequ(s, "mandelbrot8"))
-		return(8);
+		return (8);
 	else if (ft_strequ(s, "julia"))
-		return(9);
+		return (9);
 	else
 		return (0);
 }
 
-static void	ft_printusage()
+static void	ft_printusage(void)
 {
 	printf("%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n", "[USAGE] Bad arguments",
-		   "-> ./fractol julia", "-> ./fractol mandelbrot",
-		   "-> ./fractol mandelbrot2", "-> ./fractol mandelbrot3",
-		   "-> ./fractol mandelbrot4", "-> ./fractol mandelbrot5",
-		   "-> ./fractol mandelbrot6", "-> ./fractal mandelbrot7",
-		   "-> ./fractal mandelbrot8");
+		"-> ./fractol julia", "-> ./fractol mandelbrot",
+		"-> ./fractol mandelbrot2", "-> ./fractol mandelbrot3",
+		"-> ./fractol mandelbrot4", "-> ./fractol mandelbrot5",
+		"-> ./fractol mandelbrot6", "-> ./fractal mandelbrot7",
+		"-> ./fractal mandelbrot8");
 }
 
 int			main(int ac, char **av)

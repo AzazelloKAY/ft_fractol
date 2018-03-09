@@ -1,6 +1,14 @@
-//
-// Created by Antonin KOKOSHKO on 3/6/18.
-//
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_julia.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: akokoshk <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2018/03/09 14:10:21 by akokoshk          #+#    #+#             */
+/*   Updated: 2018/03/09 14:10:22 by akokoshk         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "ft_fractol.h"
 
@@ -35,14 +43,14 @@ static t_point	*ft_isjul_point(t_fract *f, t_point *p)
 		zprev.rl = z.rl;
 		z.im = 2 * zprev.rl * zprev.im + f->mouse_alt.im;
 		z.rl = zprev.rl * zprev.rl - zprev.im * zprev.im + f->mouse_alt.rl;
-		if(z.im * z.im + z.rl * z.rl > 4)
+		if (z.im * z.im + z.rl * z.rl > 4)
 			break ;
 	}
 	p->colr.val = ft_makecolor(f, p->colr.val, i, z);
 	return (p);
 }
 
-static void		*ft_treadlonch(void* tf)
+static void		*ft_treadlonch(void *tf)
 {
 	t_point		p;
 	t_fract		*f;
@@ -87,7 +95,7 @@ void			ft_calc_jul(t_fract *f)
 	ft_drawimg(f);
 }
 
-void 			ft_julia(void)
+void			ft_julia(void)
 {
 	t_fract *f;
 
